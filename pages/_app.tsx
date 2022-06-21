@@ -19,13 +19,21 @@ interface MyAppProps extends AppProps {
 }
 
 //NProgress.configure({ trickle: false });
-//  NProgress.configure({ showSpinner: false });
+NProgress.configure({ showSpinner: false });
 //Binding events. 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 export default function MyApp(props: MyAppProps) {
+  const [hasWindow, setHasWindow] = React.useState(false);
+  React.useEffect(() => {
+    if (window !== undefined) {
+      setHasWindow(true);
+    }
+
+  }, []);
+
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
     <CacheProvider value={emotionCache}>
@@ -36,7 +44,9 @@ export default function MyApp(props: MyAppProps) {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
-          <Component {...pageProps} />
+          <div suppressHydrationWarning >
+            {!hasWindow ? null : <Component {...pageProps} />}
+          </div>
         </ThemeProvider>
       </Provider>
     </CacheProvider >
