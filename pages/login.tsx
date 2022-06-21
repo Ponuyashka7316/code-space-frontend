@@ -1,5 +1,6 @@
 import React from 'react'
 import SignInOutContainer from '../ui/components/Login/SignInOutContainer'
+import NProgress from 'nprogress'; //nprogress module
 
 export async function getServerSideProps() {
     // const response = await fetch('https://api.github.com/users/octocat')
@@ -10,6 +11,7 @@ export async function getServerSideProps() {
 }
 
 const Login = () => {
+    //NProgress.start()
     return (
         <>
             <SignInOutContainer />

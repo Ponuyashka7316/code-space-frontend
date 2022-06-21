@@ -8,13 +8,22 @@ import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
-
+import Router from 'next/router';
+import NProgress from 'nprogress'; //nprogress module
+import 'nprogress/nprogress.css'; //styles of nprogress
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
+
+//NProgress.configure({ trickle: false });
+//  NProgress.configure({ showSpinner: false });
+//Binding events. 
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
