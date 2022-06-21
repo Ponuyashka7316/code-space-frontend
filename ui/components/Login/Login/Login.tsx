@@ -1,8 +1,21 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; import { Avatar, Button, Checkbox, Grid, Link, Paper, Stack, styled, TextField, TextFieldProps, Typography } from '@mui/material'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+//  import { Avatar, Button, Checkbox, Grid, Link, Paper, Stack, TextField, TextFieldProps, Typography } from '@mui/material'
 import React from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import Auth from '../../Auth/Auth';
+import handleSubmit from './HandleSubmit';
+import styled from '@emotion/styled';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import Checkbox from '@mui/material/Checkbox';
+import Button from '@mui/material/Button';
+import Link from 'next/link';
+import Grid from '@mui/material/Grid';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 
 export const CustomTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
     // margin: 2,
@@ -12,16 +25,16 @@ export const CustomTextField = styled(TextField)<TextFieldProps>(({ theme }) => 
 const validationSchema = yup.object({
     email: yup
         .string()
-        .email('Enter a valid email')
+        //.email('Enter a valid email')
         .required('Email is required'),
     password: yup
         .string()
         .trim()
         .min(8, 'Password should be of minimum 8 characters length')
         .uppercase('Password should contain at least one uppercase letter')
-        .matches(
-            /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-            "Password must contain at least 8 characters, one uppercase, one number and one special case character")
+        // .matches(
+        //     /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+        //     "Password must contain at least 8 characters, one uppercase, one number and one special case character")
         .required('Password is required'),
 });
 
@@ -33,7 +46,9 @@ const Login = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values: any) => {
-            alert(JSON.stringify(values, null, 2));
+            //alert(JSON.stringify(values, null, 2));
+            handleSubmit(values);
+
         },
     });
 
@@ -41,12 +56,12 @@ const Login = () => {
     return (
         <>
             <Grid>
-                <Paper elevation={10}
+                <Paper
                     sx={{
                         p: 3,
                         height: '70vh',
                         width: 350,
-                        margin: "20px auto",
+                        margin: "0 auto",
                     }}>
                     <Stack alignItems={"center"} justifyContent="center">
                         <Avatar
@@ -97,11 +112,11 @@ const Login = () => {
                             Sign in
                         </Button>
                         <Typography>
-                            <Link >Forgot password ? </Link>
+                            <Link href={""}>Forgot password ? </Link>
                         </Typography>
                         <Typography>
                             Do you have an account ?
-                            <Link>Sign Up</Link>
+                            <Link href={""}>Sign Up</Link>
                         </Typography>
                     </form>
                 </Paper>

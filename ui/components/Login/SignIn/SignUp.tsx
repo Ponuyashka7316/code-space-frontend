@@ -1,10 +1,23 @@
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'; import { Avatar, Button, Checkbox, FormControl, FormLabel, Grid, Link, Paper, Radio, RadioGroup, Stack, styled, TextField, TextFieldProps, Typography } from '@mui/material'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+// import { Avatar, Button, Checkbox, FormControl, FormLabel, Grid, Link as MuiLink, Paper, Radio, RadioGroup, Stack, styled, TextField, TextFieldProps, Typography } from '@mui/material'
 import React from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { CustomTextField } from '../Login/Login';
-import { AddCircleOutline } from '@mui/icons-material';
+import AddCircleOutline from '@mui/icons-material/AddCircleOutline';
+import Link from 'next/link';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import RadioGroup from '@mui/material/RadioGroup';
+import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
+import Checkbox from '@mui/material/Checkbox';
 
 const validationSchema = yup.object({
     name: yup
@@ -55,12 +68,12 @@ const SignUp = () => {
     });
     return (
         <> <Grid>
-            <Paper elevation={10}
+            <Paper
                 sx={{
                     p: 3,
                     //height: '70vh',
                     width: 350,
-                    margin: "20px auto",
+                    margin: "0 auto",
                 }}>
                 <Stack alignItems={"center"} justifyContent="center">
                     <Avatar
@@ -178,7 +191,11 @@ const SignUp = () => {
                     />
                     <Typography>
                         Do you have an account ?
-                        <Link>Sign In</Link>
+                        <Link href={''}>Sign In</Link>
+                    </Typography>
+                    <Typography>
+                        Learn more about our team {' '}
+                        <Link href='/about'>About Us</Link>
                     </Typography>
                 </form>
             </Paper>

@@ -1,7 +1,6 @@
 import React from 'react'
 import useSWR from 'swr';
 import { ResponseType } from '../../../common/types/ResponseType';
-import fetcher from '../../../utils/fetcher';
 import { getCourses } from './Courses.api';
 
 function Courses() {

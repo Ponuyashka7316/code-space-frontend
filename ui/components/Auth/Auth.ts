@@ -1,8 +1,8 @@
-import { axiosInstance } from "../../../utils/axiosInstance";
+import { http } from "../../../utils/axiosInstance";
 import { LoginResponce as TokenInfo } from "./LoginResponce";
 // import { instanceOfTokenResponse } from "./TypeGuard";
 class Auth {
-  private readonly url = "/login";
+  private readonly url = "api/Authenticate/";
   private readonly data = {
     //RequestObj: recordId,
     MethodName: "AcquireB2CToken",
@@ -11,11 +11,16 @@ class Auth {
 
   public async login(login: string, password: string) {
     try {
-      let { data } = await axiosInstance.post<TokenInfo>(
-        `${process.env.NEXT_PUBLIC_API_URL}${this.url}`,
+      let { data } = await http.post<TokenInfo>(
+        `${process.env.NEXT_PUBLIC_API_URL}${this.url}login`,
         {
           username: login,
           password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
       localStorage.setItem("token", JSON.stringify(data));
@@ -30,7 +35,7 @@ class Auth {
   public async register<RegisterType>(info: RegisterType) {
     try {
       const { username, email, password }: any = info;
-      let { data } = await axiosInstance.post<RegisterType>(
+      let { data } = await http.post<RegisterType>(
         `${process.env.NEXT_PUBLIC_API_URL}/register`,
         {
           username: username,
@@ -65,7 +70,7 @@ class Auth {
         const { Expiration, RefreshToken, Token } = JSON.parse(
           token
         ) as TokenInfo;
-        const { data } = await axiosInstance.post<TokenInfo>("/refresh-token", {
+        const { data } = await http.post<TokenInfo>("/refresh-token", {
           accessToken: Token,
           refreshToken: RefreshToken,
           refreshTokenExpiryTime: Expiration,

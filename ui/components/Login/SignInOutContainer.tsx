@@ -1,4 +1,7 @@
-import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
+// import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import React from 'react'
 import Login from './Login/Login';
 import SignUp from './SignIn/SignUp';
@@ -16,17 +19,22 @@ const SignInOutContainer = () => {
 
     return (
         <>
-            <Paper square>
+            <Paper
+                elevation={20}
+                sx={{
+                    width: 350,
+                    margin: "20px auto",
+                }}>
                 <Tabs
                     value={value}
                     onChange={handleChange}
                     indicatorColor="primary"
-                    variant="scrollable"
+                    variant="fullWidth"
                     scrollButtons="auto"
                     aria-label="login-sign-up-tabs"
                 >
-                    <Tab label="Login" />
-                    <Tab label="Sign in" />
+                    <Tab label="Sign In" />
+                    <Tab label="Sign Up" />
                 </Tabs>
                 <TabPanel value={value} index={0} >
                     <Login />
@@ -34,8 +42,6 @@ const SignInOutContainer = () => {
                 <TabPanel value={value} index={1} >
                     <SignUp />
                 </TabPanel>
-
-
             </Paper>
         </>
     )

@@ -4,9 +4,18 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Link from 'next/link';
 // import Link from '../src/Link';
 // import ProTip from '../src/ProTip';
 // import Copyright from '../src/Copyright';
+
+export async function getServerSideProps() {
+    // const response = await fetch('https://api.github.com/users/octocat')
+    return {
+        props: {
+        }
+    }
+}
 
 const About: NextPage = () => {
     return (
@@ -23,6 +32,7 @@ const About: NextPage = () => {
                 <Typography variant="h4" component="h1" gutterBottom>
                     MUI v5 + Next.js with TypeScript example
                 </Typography>
+                <Link href="/login"> Login </Link>
                 {/* <Box maxWidth="sm">
                     <Button variant="contained" component={Link} noLinkStyle href="/">
                         Go to the home page
