@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
@@ -20,6 +21,9 @@ export default function Home() {
           <code className={styles.code}>
             pages/index.js</code>
         </p>
+        <Link href={"/about"}>About</Link>
+        <Link href={"/login"}>Login</Link>
+
 
       </main>
     </div>
