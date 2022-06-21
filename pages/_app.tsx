@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import theme from '../src/theme';
 import createEmotionCache from '../src/createEmotionCache';
-import { Provider } from 'react-redux';
 import { store } from '../redux/store';
 import Router from 'next/router';
 import NProgress from 'nprogress'; //nprogress module
@@ -40,15 +39,13 @@ export default function MyApp(props: MyAppProps) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <div suppressHydrationWarning >
-            {!hasWindow ? null : <Component {...pageProps} />}
-          </div>
-        </ThemeProvider>
-      </Provider>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <div suppressHydrationWarning >
+          {!hasWindow ? null : <Component {...pageProps} />}
+        </div>
+      </ThemeProvider>
     </CacheProvider >
   );
 }

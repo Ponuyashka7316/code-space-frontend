@@ -1,7 +1,10 @@
 import React from 'react'
 import useSWR from 'swr';
 import { ResponseType } from '../../../common/types/ResponseType';
+import { store } from '../../../redux/store';
 import { getCourses } from './Courses.api';
+import { Provider } from 'react-redux';
+import Button from '@mui/material/Button';
 
 function Courses() {
     React.useEffect(() => {
@@ -10,7 +13,10 @@ function Courses() {
     }, []);
 
     return (
-        <div>Courses</div>
+        <Provider store={store}>
+            <div>Courses</div>
+            <Button />
+        </Provider>
     )
 }
 
