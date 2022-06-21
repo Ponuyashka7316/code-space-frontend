@@ -5,7 +5,8 @@ import createEmotionServer from '@emotion/server/create-instance';
 import theme from '../src/theme';
 import { createEmotionCache } from '../src/createEmotionCache';
 
-class CustomDocument extends Document {
+class MyDocument extends Document {
+  static displayName: string;
   render() {
     return (
       <Html lang="en">
@@ -31,7 +32,7 @@ class CustomDocument extends Document {
 
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
-CustomDocument.getInitialProps = async (ctx) => {
+MyDocument.getInitialProps = async (ctx) => {
   const originalRenderPage = ctx.renderPage;
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
@@ -62,4 +63,5 @@ CustomDocument.getInitialProps = async (ctx) => {
   };
 };
 
-export default CustomDocument;
+MyDocument.displayName = 'MyDocument';
+export default MyDocument;
