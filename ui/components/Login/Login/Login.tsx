@@ -70,7 +70,7 @@ const Login = () => {
                             }}>
                             <LockOutlinedIcon />
                         </Avatar>
-                        <Typography variant="h3" component={"h2"}>Sign in</Typography>
+                        <Typography component="h1" variant="h5">Sign in</Typography>
                     </Stack>
                     <form onSubmit={formik.handleSubmit}>
                         <CustomTextField
