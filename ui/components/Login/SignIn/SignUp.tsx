@@ -18,8 +18,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
 
-const validationSchema = yup.object({
+const validationSchema = yup.object().shape({
     name: yup
         .string()
         .required('Name is required'),
@@ -30,18 +31,31 @@ const validationSchema = yup.object({
     gender: yup
         .string()
         .required(),
+    // password: yup
+    //     .string()
+    //     .trim()
+    //     .min(8, 'Password should be of minimum 8 characters length')
+    //     .uppercase('Password should contain at least one uppercase letter'),
+    // .matches(
+    //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    //     "Password must contain at least 8 characters, one uppercase, one number and one special case character")
+    // .required('Password is required'),
+    //ts-ignore
     password: yup
         .string()
-        .trim()
         .min(8, 'Password should be of minimum 8 characters length')
-        .uppercase('Password should contain at least one uppercase letter')
+        .required('Password is required')
         .matches(
-            /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+            /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
             "Password must contain at least 8 characters, one uppercase, one number and one special case character")
         .required('Password is required'),
-    passwordConfirmation: yup.string()
-        .oneOf([yup.ref('password'), null], 'Passwords must match')
-        .required('Password confirmation is required'),
+    passwordConfirmation: yup.string().when("password", {
+        is: (val: string | any[]) => (val && val.length > 0 ? true : false),
+        then: yup.string().oneOf(
+            [yup.ref("password")],
+            "Both password need to be the same"
+        )
+    }),
     phone: yup
         .string()
         .required(),
@@ -66,28 +80,31 @@ const SignUp = () => {
             alert(JSON.stringify(values, null, 2));
         },
     });
-    return (
-        <> <Grid>
-            <Paper
-                sx={{
-                    p: 3,
-                    //height: '70vh',
-                    width: 350,
-                    margin: "0 auto",
-                }}>
-                <Stack alignItems={"center"} justifyContent="center">
-                    <Avatar
-                        sx={{
-                            bgcolor: "#008000"
-                        }}>
-                        <AddCircleOutline />
-                    </Avatar>
-                    <Typography variant="h3" component={"h2"}>Sign Up   </Typography>
-                    <Typography >Please fill this form to enter the website   </Typography>
 
-                </Stack>
-                <form onSubmit={formik.handleSubmit}>
-                    <FormControl variant="standard" fullWidth>
+    console.log("rendered", formik)
+
+
+    return (
+        <>
+            <Grid>
+                <Paper
+                    sx={{
+                        p: 3,
+                        //height: '70vh',
+                        width: 350,
+                        margin: "0 auto",
+                    }}>
+                    <Stack alignItems={"center"} justifyContent="center">
+                        <Avatar
+                            sx={{
+                                bgcolor: "#008000"
+                            }}>
+                            <AddCircleOutline />
+                        </Avatar>
+                        <Typography variant="h3" component={"h2"}>Sign Up   </Typography>
+                        <Typography >Please fill this form to enter the website   </Typography>
+                    </Stack>
+                    <form onSubmit={formik.handleSubmit}>
                         <CustomTextField
                             value={formik.values.name}
                             onChange={formik.handleChange}
@@ -99,9 +116,8 @@ const SignUp = () => {
                             helperText={formik.touched.name && formik.errors.name}
                             error={formik.touched.name && Boolean(formik.errors.name)}
                             margin="dense"
+                            fullWidth
                         />
-                    </FormControl>
-                    <FormControl fullWidth>
                         <CustomTextField
                             value={formik.values.email}
                             onChange={formik.handleChange}
@@ -114,10 +130,8 @@ const SignUp = () => {
                             helperText={formik.touched.email && formik.errors.email}
                             error={formik.touched.email && Boolean(formik.errors.email)}
                             margin="dense"
-
+                            fullWidth
                         />
-                    </FormControl>
-                    <FormControl fullWidth>
                         <FormLabel id="gender-label">Gender</FormLabel>
                         <RadioGroup
                             id="gender"
@@ -125,70 +139,74 @@ const SignUp = () => {
                             row
                             onChange={formik.handleChange}
                             aria-labelledby="demo-radio-buttons-group-label"
-                            // error={formik.touched.password && Boolean(formik.errors.password)}
+                            // error={formik.touched.gender && Boolean(formik.errors.gender)}
                             value={formik.values.gender}
+
                         >
                             <FormControlLabel value="female" control={<Radio />} label="Female" />
                             <FormControlLabel value="male" control={<Radio />} label="Male" />
                             <FormControlLabel value="other" control={<Radio />} label="Other" />
                         </RadioGroup>
-                    </FormControl>
 
-                    <CustomTextField
-                        value={formik.values.phone}
-                        onChange={formik.handleChange}
-                        id="phone"
-                        size='small'
-                        name="phone"
-                        label="Phone"
-                        placeholder="Enter phone number"
-                        type="password"
-                        helperText={formik.touched.phone && formik.errors.phone}
-                        error={formik.touched.phone && Boolean(formik.errors.phone)}
-                        margin="dense"
-                        fullWidth
-                    />
-                    <CustomTextField
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        id="password"
-                        size='small'
-                        name="password"
-                        label="Password"
-                        placeholder="Enter password"
-                        type="password"
-                        helperText={formik.touched.password && formik.errors.password}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        margin="dense"
-                        fullWidth
-                    />
-                    <CustomTextField
-                        value={formik.values.passwordConfirmation}
-                        onChange={formik.handleChange}
-                        id="passwordConfirmation"
-                        name="passwordConfirmation"
-                        label="Confirm Password"
-                        placeholder="Confirm Password"
-                        type="password"
-                        helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
-                        error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
-                        margin="dense"
-                        fullWidth
-                    />
-                    <Button type="submit" color="primary" variant="contained" fullWidth sx={{
-                        margin: "8px 0"
-                    }}>
-                        Sign Up
-                    </Button>
+                        <CustomTextField
+                            value={formik.values.phone}
+                            onChange={formik.handleChange}
+                            id="phone"
+                            size='small'
+                            name="phone"
+                            label="Phone"
+                            placeholder="Enter phone number"
+                            type="phone"
+                            helperText={formik.touched.phone && formik.errors.phone}
+                            error={formik.touched.phone && Boolean(formik.errors.phone)}
+                            margin="dense"
+                            fullWidth
+                        />
+                        <TextField
+                            fullWidth
+                            id="password"
+                            size='small'
+                            name="password"
+                            label="Password"
+                            type="password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
+                            margin="dense"
+                        />
+                        <TextField
+                            id="passwordConfirmation"
+                            size='small'
+                            name="passwordConfirmation"
+                            label="passwordConfirmation"
+                            type="password"
+                            value={formik.values.passwordConfirmation}
+                            onChange={formik.handleChange}
+                            error={formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+                            helperText={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
+                            margin="dense"
+                            fullWidth
+                        />
+                        <Button type="submit" color="primary" variant="contained" fullWidth sx={{
+                            margin: "8px 0"
+                        }}>
+                            Sign Up
+                        </Button>
 
-                    <FormControlLabel
-                        label="Terms and conditions"
-                        control={
-                            <Checkbox
-                                name='Conditions'
-                            />
-                        }
-                    />
+                        <FormControlLabel
+                            label="Terms and conditions"
+                            id="terms"
+                            name="terms"
+
+                            control={
+                                <Checkbox
+                                    name='Conditions'
+                                />
+                            }
+                        />
+
+                    </form>
                     <Typography>
                         Do you have an account ?
                         <Link href={''}>Sign In</Link>
@@ -197,9 +215,8 @@ const SignUp = () => {
                         Learn more about our team {' '}
                         <Link href='/about'>About Us</Link>
                     </Typography>
-                </form>
-            </Paper>
-        </Grid >  </>
+                </Paper>
+            </Grid >  </>
 
     )
 }

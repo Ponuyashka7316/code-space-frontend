@@ -16,6 +16,7 @@ const SignInOutContainer = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+    console.log("SignInOutContainer")
 
     return (
         <>

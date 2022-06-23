@@ -1,10 +1,9 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 //  import { Avatar, Button, Checkbox, Grid, Link, Paper, Stack, TextField, TextFieldProps, Typography } from '@mui/material'
-import React from 'react'
+import React, { memo, useState } from 'react'
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import Auth from '../../Auth/Auth';
 import handleSubmit from './HandleSubmit';
 import styled from '@emotion/styled';
 import Paper from '@mui/material/Paper';
@@ -16,6 +15,19 @@ import Button from '@mui/material/Button';
 import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import classes from '../../../../styles/muiStyle.module.scss';
+import clsx from 'clsx';
+import Alert from '@mui/material/Alert';
+import { isError } from '../../Auth/TypeGuards';
+import FormControl from '@mui/material/FormControl';
+
+// whyDidYouRender(React, {
+//     onlyLogs: true,
+//     titleColor: "green",
+//     diffNameColor: "darkturquoise"
+// });
 
 export const CustomTextField = styled(TextField)<TextFieldProps>(({ theme }) => ({
     // margin: 2,
@@ -38,24 +50,54 @@ const validationSchema = yup.object({
         .required('Password is required'),
 });
 
-const Login = () => {
+const Login = (props: any) => {
+    const [isLogging, setIsLogging] = useState<boolean>(false);
+    const [showmessage, setShowmessage] = useState<boolean>(false);
+    const [alertmessage, setAlertmessage] = useState('Some error happened. Please contact your administrator');
+    //useWhyDidYouUpdate("Login", props);
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values: any) => {
+        onSubmit: async (values: any) => {
+            setIsLogging(true); //first rerender
             //alert(JSON.stringify(values, null, 2));
-            handleSubmit(values);
+            const res = await handleSubmit(values);
+            (isError(res))
+                ? (setShowmessage(true))
+                : (setShowmessage(false));
 
+            setIsLogging(false);
+            console.log("onsubmit");
         },
     });
 
-
+    console.log("RENRERED", isLogging)
     return (
         <>
-            <Grid>
+            {showmessage && (
+                <Alert variant="filled" severity="error">
+                    {alertmessage}
+                </Alert>
+            )}
+            <Grid sx={{
+                position: 'relative'
+            }}>
+                <Box
+                    className={clsx({
+                        [classes.CenterContent]: isLogging,
+                        [classes.Loading]: isLogging
+                    })}
+                    sx={{
+                        display: isLogging ? "flex" : "none",
+                        position: "absolute",
+                        width: '100%',
+                        height: '100%',
+                    }}>
+                    <CircularProgress thickness={4} size={"3rem"} />
+                </Box>
                 <Paper
                     sx={{
                         p: 3,
@@ -73,18 +115,21 @@ const Login = () => {
                         <Typography component="h1" variant="h5">Sign in</Typography>
                     </Stack>
                     <form onSubmit={formik.handleSubmit}>
-                        <CustomTextField
-                            value={formik.values.email}
-                            onChange={formik.handleChange}
-                            id="email"
-                            size="medium"
-                            name="email"
-                            label="Username"
-                            placeholder="Enter user name"
-                            helperText={formik.touched.email && formik.errors.email}
-                            error={formik.touched.email && Boolean(formik.errors.email)}
-                            margin="dense"
-                            fullWidth />
+                        <FormControl variant="standard" fullWidth>
+                            <CustomTextField
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
+                                id="email"
+                                size="medium"
+                                name="email"
+                                label="Username"
+                                placeholder="Enter user name"
+                                helperText={formik.touched.email && formik.errors.email}
+                                error={formik.touched.email && Boolean(formik.errors.email)}
+                                margin="dense"
+                                fullWidth
+                            />
+                        </FormControl>
                         <CustomTextField
                             value={formik.values.password}
                             onChange={formik.handleChange}
@@ -121,9 +166,10 @@ const Login = () => {
                     </form>
                 </Paper>
             </Grid >
-
         </>
     )
 }
 
-export default Login;
+
+
+export default memo(Login);

@@ -1,4 +1,6 @@
+import axios, { AxiosError } from "axios";
 import { http } from "../../../utils/axiosInstance";
+import ResponseError from "./Error.type";
 import { LoginResponce as TokenInfo } from "./LoginResponce";
 // import { instanceOfTokenResponse } from "./TypeGuard";
 class Auth {
@@ -26,8 +28,15 @@ class Auth {
       localStorage.setItem("token", JSON.stringify(data));
       Auth.expiresAt = new Date(data.Expiration).getTime() / 1000;
       return data;
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+        return {
+          message: err.message,
+          error: err.code,
+        } as unknown as ResponseError;
+        // Access to config, request, and response
+      }
     }
     return null;
   }
@@ -36,7 +45,7 @@ class Auth {
     try {
       const { username, email, password }: any = info;
       let { data } = await http.post<RegisterType>(
-        `${process.env.NEXT_PUBLIC_API_URL}/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}${this.url}/register`,
         {
           username: username,
           mail: email,
@@ -67,15 +76,19 @@ class Auth {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const { Expiration, RefreshToken, Token } = JSON.parse(
+        const { Expiration, RefreshToken, Token, User, Roles } = JSON.parse(
           token
         ) as TokenInfo;
-        const { data } = await http.post<TokenInfo>("/refresh-token", {
-          accessToken: Token,
-          refreshToken: RefreshToken,
-          refreshTokenExpiryTime: Expiration,
-        });
-        localStorage.setItem("token", JSON.stringify(data));
+        const { data } = await http.post<TokenInfo>(
+          `${this.url}/refresh-token`,
+          {
+            accessToken: Token,
+            refreshToken: RefreshToken,
+            refreshTokenExpiryTime: Expiration,
+          }
+        );
+        const newTokenData = { ...data, User, Roles };
+        localStorage.setItem("token", JSON.stringify(newTokenData));
         Auth.expiresAt = new Date(data.Expiration).getTime() / 1000;
       } catch (e) {
         console.log(e);

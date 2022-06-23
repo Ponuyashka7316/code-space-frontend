@@ -1,0 +1,13 @@
+.CenterContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Loading {
+  background-color: white;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  //   display: block;
+  z-index: 1;
+}
