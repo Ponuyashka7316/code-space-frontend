@@ -47,8 +47,8 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <div >
-          {getLayout(<Component {...pageProps} />)}
+        <div suppressHydrationWarning>
+          {!hasWindow ? null : getLayout(<Component {...pageProps} />)}
           {/* {!hasWindow ? null : getLayout(<Component {...pageProps} />)} */}
 
         </div>
