@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -30,6 +31,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^12.1.6",
     "@types/node": "18.0.0",
     "@types/nprogress": "^0.2.0",
     "@types/react": "18.0.14",
@@ -37,6 +39,8 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "babel-plugin-direct-import": "^1.0.0",
     "babel-plugin-import": "^1.13.5",
+    "cross-env": "^7.0.3",
+    "cross-spawn": "^7.0.3",
     "eslint": "^8.17.0",
     "eslint-config-next": "12.1.6",
     "eslint-plugin-react": "^7.30.0",

@@ -9,13 +9,13 @@ import Link from 'next/link';
 // import ProTip from '../src/ProTip';
 // import Copyright from '../src/Copyright';
 
-export async function getServerSideProps() {
-    // const response = await fetch('https://api.github.com/users/octocat')
-    return {
-        props: {
-        }
-    }
-}
+// export async function getServerSideProps() {
+//     // const response = await fetch('https://api.github.com/users/octocat')
+//     return {
+//         props: {
+//         }
+//     }
+// }
 
 const About: NextPage = () => {
     return (
