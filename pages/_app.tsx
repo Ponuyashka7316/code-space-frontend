@@ -34,6 +34,10 @@ export default function MyApp(props: MyAppProps) {
   }, []);
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  // @ts-ignore
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -43,8 +47,10 @@ export default function MyApp(props: MyAppProps) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <div suppressHydrationWarning >
-          {!hasWindow ? null : <Component {...pageProps} />}
+        <div >
+          {getLayout(<Component {...pageProps} />)}
+          {/* {!hasWindow ? null : getLayout(<Component {...pageProps} />)} */}
+
         </div>
       </ThemeProvider>
     </CacheProvider >
