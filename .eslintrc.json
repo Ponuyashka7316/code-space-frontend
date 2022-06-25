@@ -1,11 +1,12 @@
 {
   "extends": [
-    "next/core-web-vitals",
+    "next/core-web-vitals"
     // "eslint:recommended",
     // "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    //"plugin:react-hooks/recommended"
   ],
   "rules": {
+    "react/display-name": "off",
     "no-restricted-imports": [
       "error",
       {

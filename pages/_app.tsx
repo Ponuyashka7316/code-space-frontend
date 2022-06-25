@@ -11,12 +11,6 @@ import Router from 'next/router';
 import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress
 // Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache();
-
-interface MyAppProps extends AppProps {
-  emotionCache?: EmotionCache;
-}
-
 //NProgress.configure({ trickle: false });
 NProgress.configure({ showSpinner: false });
 //Binding events. 
@@ -24,35 +18,24 @@ Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
-export default function MyApp(props: MyAppProps) {
-  const [hasWindow, setHasWindow] = React.useState(false);
-  React.useEffect(() => {
-    if (window !== undefined) {
-      setHasWindow(true);
-    }
 
-  }, []);
+const clientSideEmotionCache = createEmotionCache()
 
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache
+}
 
-  // @ts-ignore
-  const getLayout = Component.getLayout ?? ((page) => page);
-
+export default function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <title>Head</title>
+        <title>Change title in _app.tsx</title>
+        <meta name="viewport" content='initial-scale=1, width=device-width' />
       </Head>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <div suppressHydrationWarning>
-          {!hasWindow ? null : getLayout(<Component {...pageProps} />)}
-          {/* {!hasWindow ? null : getLayout(<Component {...pageProps} />)} */}
-
-        </div>
+        <Component {...pageProps} />
       </ThemeProvider>
-    </CacheProvider >
-  );
+    </CacheProvider>
+  )
 }
