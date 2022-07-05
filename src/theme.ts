@@ -1,9 +1,10 @@
-import { createTheme } from "@mui/material";
+import { createTheme, Theme } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
 // Create a theme instance.
-const theme = createTheme({
+const theme: Theme = createTheme({
   palette: {
+    mode: "light",
     primary: {
       main: "#556cd6",
     },
@@ -12,6 +13,16 @@ const theme = createTheme({
     },
     error: {
       main: red.A400,
+    },
+  },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        colorPrimary: {
+          // backgroundColor: "#fff",
+          // color: "rgba(0, 0, 0, 0.87)",
+        },
+      },
     },
   },
 });
