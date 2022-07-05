@@ -7,6 +7,11 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../ListItems/ListItems';
 import theme from '../../../src/theme';
 
+const drawerWidth: number = 240;
+const iOS =
+    typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+
 function Copyright(props: any) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -23,8 +28,6 @@ function Copyright(props: any) {
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
 }
-
-const drawerWidth: number = 240;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
@@ -63,7 +66,7 @@ const CustomDrawer = styled(SwipeableDrawer, { shouldForwardProp: (prop) => prop
                 }),
                 width: theme.spacing(7),
                 [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
+                    width: theme.spacing(7), //closed drawer width
                 },
             }),
         },
@@ -118,7 +121,8 @@ const Layout: React.FC = ({ children }) => {
                     </Toolbar>
                 </AppBar>
                 <CustomDrawer variant="permanent" open={open}
-                    //anchor={anchor}
+                    disableBackdropTransition={!iOS}
+                    disableDiscovery={iOS}
                     onClose={toggleDrawer(true)}
                     onOpen={toggleDrawer(false)}>
                     <Toolbar
