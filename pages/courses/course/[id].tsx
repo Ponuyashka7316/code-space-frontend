@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { useRouter } from 'next/router'
+import Layout from '../../../ui/components/Layouts/Layout'
+import { NextPageWithLayout } from '../../_app'
 
-const Course = () => {
+const Course: NextPageWithLayout = () => {
     const router = useRouter()
     const { id } = router.query
 
@@ -10,4 +12,11 @@ const Course = () => {
     )
 }
 
+Course.getLayout = function getLayout(page: ReactElement) {
+    return (
+        <Layout>
+            <>{page}</>
+        </Layout>
+    )
+}
 export default Course
