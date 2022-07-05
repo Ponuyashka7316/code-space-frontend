@@ -1,4 +1,5 @@
 // import { Box, Paper, Tab, Tabs, Typography } from '@mui/material';
+import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
@@ -20,30 +21,32 @@ const SignInOutContainer = () => {
 
     return (
         <>
-            <Paper
-                elevation={20}
-                sx={{
-                    width: 350,
-                    margin: "20px auto",
-                }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="primary"
-                    variant="fullWidth"
-                    scrollButtons="auto"
-                    aria-label="login-sign-up-tabs"
-                >
-                    <Tab label="Sign In" />
-                    <Tab label="Sign Up" />
-                </Tabs>
-                <TabPanel value={value} index={0} >
-                    <Login />
-                </TabPanel>
-                <TabPanel value={value} index={1} >
-                    <SignUp />
-                </TabPanel>
-            </Paper>
+            <Container component="main" maxWidth="xs">
+                <Paper
+                    elevation={20}
+                    sx={{
+                        //width: 350,
+                        margin: "20px auto",
+                    }}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="primary"
+                        variant="fullWidth"
+                        scrollButtons="auto"
+                        aria-label="login-sign-up-tabs"
+                    >
+                        <Tab label="Sign In" />
+                        <Tab label="Sign Up" />
+                    </Tabs>
+                    <TabPanel value={value} index={0} >
+                        <Login />
+                    </TabPanel>
+                    <TabPanel value={value} index={1} >
+                        <SignUp />
+                    </TabPanel>
+                </Paper>
+            </Container>
         </>
     )
 }

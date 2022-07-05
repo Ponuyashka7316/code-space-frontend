@@ -91,7 +91,7 @@ const SignUp = () => {
                     sx={{
                         p: 3,
                         //height: '70vh',
-                        width: 350,
+                        //width: 350,
                         margin: "0 auto",
                     }}>
                     <Stack alignItems={"center"} justifyContent="center">

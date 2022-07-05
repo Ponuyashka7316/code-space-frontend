@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { ReactElement, useState } from 'react'
 //import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import Layout from '../../ui/components/Layouts/Layout';
+import { NextPageWithLayout } from '../_app';
 //const Courses = dynamic(() => import('../ui/components/Courses/Courses'));
 const getPosts = async () => {
     var posts = await [{ page: 1 }, { page: 2 }, { page: 2 }, { page: 3 }, { page: 4 }, { page: 5 }];
@@ -9,7 +11,7 @@ const getPosts = async () => {
 }
 
 
-const CoursesPage = () => {
+const CoursesPage: NextPageWithLayout = () => {
     const [posts, updateData] = useState<any>();
     React.useEffect(() => {
         console.log('Courses page rendered')
@@ -53,4 +55,12 @@ const CoursesPage = () => {
     )
 }
 
-export default CoursesPage;
+CoursesPage.getLayout = function getLayout(page: ReactElement) {
+    return (
+        <Layout>
+            <>{page}</>
+        </Layout>
+    )
+}
+export default CoursesPage
+

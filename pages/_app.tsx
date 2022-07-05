@@ -1,5 +1,5 @@
 import '../utils/wdyr'
-import * as React from 'react';
+import type { ReactElement, ReactNode } from 'react'
 import Head from 'next/head';
 import { AppProps } from 'next/app';
 import { ThemeProvider } from '@mui/material/styles';
@@ -10,6 +10,7 @@ import { createEmotionCache } from '../src/createEmotionCache';
 import Router from 'next/router';
 import NProgress from 'nprogress'; //nprogress module
 import 'nprogress/nprogress.css'; //styles of nprogress
+import { NextPage } from 'next';
 // Client-side cache, shared for the whole session of the user in the browser.
 //NProgress.configure({ trickle: false });
 NProgress.configure({ showSpinner: false });
@@ -25,7 +26,12 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache
 }
 
-export default function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+export default function MyApp({ Component, emotionCache = clientSideEmotionCache, pageProps }: MyAppProps & AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page)
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -34,8 +40,13 @@ export default function MyApp({ Component, emotionCache = clientSideEmotionCache
       </Head>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Component {...pageProps} />
+        {getLayout(<Component {...pageProps} />)}
       </ThemeProvider>
     </CacheProvider>
   )
+}
+
+
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode
 }
